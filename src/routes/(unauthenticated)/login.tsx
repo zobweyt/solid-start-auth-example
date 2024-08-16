@@ -1,40 +1,12 @@
-import { action, redirect, useParams, useSearchParams } from "@solidjs/router";
+import { useSearchParams } from "@solidjs/router";
 import { Show } from "solid-js";
-import { getRequestEvent } from "solid-js/web";
-import { updateSession } from "vinxi/http";
-import { SESSION_COOKIE_OPTIONS } from "~/lib/auth";
-
-const $login = async (username: string, password: string) => {
-  "use server";
-  const event = getRequestEvent();
-
-  if (event) {
-    await updateSession(event.nativeEvent, SESSION_COOKIE_OPTIONS, () => ({
-      auth: {
-        username: username,
-        password: password,
-      },
-    }));
-  }
-};
-
-const login = action(async (form: FormData) => {
-  "use server";
-
-  const username = String(form.get("username"));
-  const password = String(form.get("password"));
-  const pathname = form.get("redirect") ?? "/";
-
-  await $login(username, password);
-
-  throw redirect(String(pathname));
-});
+import { authenticate } from "~/lib/auth/actions";
 
 export default function Auth() {
   const [params] = useSearchParams();
 
   return (
-    <form action={login} method="post" class="max-w-md mx-auto my-8">
+    <form action={authenticate} method="post" class="max-w-md mx-auto my-8">
       <div class="flex flex-col gap-4">
         <input
           required

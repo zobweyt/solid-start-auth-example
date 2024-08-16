@@ -4,30 +4,32 @@ import {
   type RouteDefinition,
   type RouteSectionProps,
 } from "@solidjs/router";
-import { Show } from "solid-js/web";
-import { $isLoggedIn } from "~/lib/auth";
+import { Match, Suspense, Switch } from "solid-js/web";
+import { $isAuthenticated } from "~/lib/auth/server";
 
 export const route = {
   preload: () => {
-    $isLoggedIn();
+    $isAuthenticated();
   },
 } satisfies RouteDefinition;
 
 export default function Authenticated(props: RouteSectionProps) {
-  const isLoggedIn = createAsync(() => $isLoggedIn());
+  const isAuthenticated = createAsync(() => $isAuthenticated(), {
+    deferStream: true,
+  });
 
   return (
-    <Show
-      when={isLoggedIn()}
-      fallback={
-        <Navigate
-          href={`/login?redirect=${encodeURIComponent(
-            props.location.pathname
-          )}`}
-        />
-      }
-    >
-      {props.children}
-    </Show>
+    <Suspense>
+      <Switch>
+        <Match when={isAuthenticated()}>{props.children}</Match>
+        <Match when={isAuthenticated() === false}>
+          <Navigate
+            href={`/login?redirect=${encodeURIComponent(
+              props.location.pathname
+            )}`}
+          />
+        </Match>
+      </Switch>
+    </Suspense>
   );
 }

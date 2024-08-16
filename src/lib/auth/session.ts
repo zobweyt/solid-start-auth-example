@@ -1,5 +1,5 @@
-import { cache } from "@solidjs/router";
-import { useSession } from "vinxi/http";
+import { getRequestEvent } from "solid-js/web";
+import { updateSession, useSession } from "vinxi/http";
 
 export const SESSION_COOKIE_OPTIONS = {
   password: "thisisadummysessionsecretverylongbutnotgood",
@@ -17,8 +17,10 @@ export const getSession = async () => {
   return await useSession<SessionData>(SESSION_COOKIE_OPTIONS);
 };
 
-export const $isLoggedIn = cache(async () => {
-  "use server";
+export const changeSession = async (data: SessionData) => {
+  const event = getRequestEvent();
 
-  return (await getSession()).data.auth !== undefined;
-}, "isLoggedIn");
+  if (event) {
+    await updateSession(event.nativeEvent, SESSION_COOKIE_OPTIONS, () => data);
+  }
+};
