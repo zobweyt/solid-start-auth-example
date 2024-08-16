@@ -19,13 +19,11 @@ export default function Unauthenticated(props: RouteSectionProps) {
   });
 
   return (
-    <Suspense>
-      <Switch>
-        <Match when={isAuthenticated() === false}>{props.children}</Match>
-        <Match when={isAuthenticated()}>
-          <Navigate href="/settings" />
-        </Match>
-      </Switch>
-    </Suspense>
+    <Switch>
+      <Match when={isAuthenticated() === false}>{props.children}</Match>
+      <Match when={isAuthenticated()}>
+        <Navigate href="/settings" />
+      </Match>
+    </Switch>
   );
 }

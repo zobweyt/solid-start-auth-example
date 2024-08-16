@@ -19,17 +19,15 @@ export default function Authenticated(props: RouteSectionProps) {
   });
 
   return (
-    <Suspense>
-      <Switch>
-        <Match when={isAuthenticated()}>{props.children}</Match>
-        <Match when={isAuthenticated() === false}>
-          <Navigate
-            href={`/login?redirect=${encodeURIComponent(
-              props.location.pathname
-            )}`}
-          />
-        </Match>
-      </Switch>
-    </Suspense>
+    <Switch>
+      <Match when={isAuthenticated()}>{props.children}</Match>
+      <Match when={isAuthenticated() === false}>
+        <Navigate
+          href={`/login?redirect=${encodeURIComponent(
+            props.location.pathname
+          )}`}
+        />
+      </Match>
+    </Switch>
   );
 }
