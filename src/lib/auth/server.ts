@@ -32,4 +32,4 @@ export const $isAuthenticated = cache(async () => {
   const session = await getSession();
 
   return session.data.auth !== undefined;
-}, "isLoggedIn");
+}, "isAuthenticated");

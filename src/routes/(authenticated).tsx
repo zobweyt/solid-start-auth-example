@@ -4,7 +4,7 @@ import {
   type RouteDefinition,
   type RouteSectionProps,
 } from "@solidjs/router";
-import { Match, Suspense, Switch } from "solid-js/web";
+import { Match, Switch } from "solid-js/web";
 import { $isAuthenticated } from "~/lib/auth/server";
 
 export const route = {
@@ -20,7 +20,7 @@ export default function Authenticated(props: RouteSectionProps) {
 
   return (
     <Switch>
-      <Match when={isAuthenticated()}>{props.children}</Match>
+      <Match when={isAuthenticated() === true}>{props.children}</Match>
       <Match when={isAuthenticated() === false}>
         <Navigate
           href={`/login?redirect=${encodeURIComponent(
