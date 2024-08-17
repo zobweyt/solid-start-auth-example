@@ -4,6 +4,7 @@ import {
   type RouteDefinition,
   type RouteSectionProps,
 } from "@solidjs/router";
+import { onCleanup } from "solid-js";
 import { Match, Switch } from "solid-js/web";
 import { $isAuthenticated } from "~/lib/auth/server";
 
@@ -17,6 +18,9 @@ export default function Authenticated(props: RouteSectionProps) {
   const isAuthenticated = createAsync(() => $isAuthenticated(), {
     deferStream: true,
   });
+
+  console.info("<Authenticated /> body")
+  onCleanup(() => console.info("<Authenticated /> cleanup"))
 
   return (
     <Switch>
