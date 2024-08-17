@@ -33,3 +33,23 @@ export const $isAuthenticated = cache(async () => {
 
   return session.data.auth !== undefined;
 }, "isAuthenticated");
+
+export const $ensureIsAuthenticated = cache(async (pathname: string) => {
+  "use server";
+
+  if (await $isAuthenticated()) {
+    return;
+  }
+
+  throw redirect(pathname || "/");
+}, "ensureIsAuthenticated");
+
+export const $ensureIsUnauthenticated = cache(async (pathname: string) => {
+  "use server";
+
+  if (await $isAuthenticated()) {
+    throw redirect(pathname || "/");
+  }
+
+  return;
+}, "ensureIsAuthenticated");
