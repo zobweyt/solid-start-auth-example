@@ -6,6 +6,7 @@ import {
 } from "@solidjs/router";
 import { onCleanup } from "solid-js";
 import { Match, Switch } from "solid-js/web";
+import { createEnsureIsAuthenticated } from "~/lib/auth/create";
 import { $isAuthenticated } from "~/lib/auth/server";
 
 export const route = {
@@ -39,8 +40,7 @@ export default function Authenticated(props: RouteSectionProps) {
 // * This approach will temporarily display the route's contents to the user.
 // export const route = {
 //   preload: ({ location }) => {
-//     $isAuthenticated();
-//     $ensureIsAuthenticated(
+//     createEnsureIsAuthenticated(
 //       `/login?redirect=${encodeURIComponent(location.pathname)}`
 //     );
 //   },

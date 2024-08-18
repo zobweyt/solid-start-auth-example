@@ -5,6 +5,7 @@ import {
   type RouteSectionProps,
 } from "@solidjs/router";
 import { Match, Switch } from "solid-js";
+import { createEnsureIsUnauthenticated } from "~/lib/auth/create";
 import { $isAuthenticated } from "~/lib/auth/server";
 
 export const route = {
@@ -31,11 +32,10 @@ export default function Unauthenticated(props: RouteSectionProps) {
 // * This approach will temporarily display the route's contents to the user.
 // export const route = {
 //   preload: () => {
-//     $isAuthenticated();
-//     $ensureIsUnauthenticated(`/settings`);
+//     createEnsureIsUnauthenticated(`/settings`);
 //   },
 // } satisfies RouteDefinition;
 
-// export default function Authenticated(props: RouteSectionProps) {
+// export default function Unauthenticated(props: RouteSectionProps) {
 //   return props.children;
 // }

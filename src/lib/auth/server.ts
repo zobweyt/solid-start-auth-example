@@ -37,11 +37,9 @@ export const $isAuthenticated = cache(async () => {
 export const $ensureIsAuthenticated = cache(async (pathname: string) => {
   "use server";
 
-  if (await $isAuthenticated()) {
-    return;
+  if (!(await $isAuthenticated())) {
+    throw redirect(pathname || "/");
   }
-
-  throw redirect(pathname || "/");
 }, "ensureIsAuthenticated");
 
 export const $ensureIsUnauthenticated = cache(async (pathname: string) => {
@@ -50,6 +48,4 @@ export const $ensureIsUnauthenticated = cache(async (pathname: string) => {
   if (await $isAuthenticated()) {
     throw redirect(pathname || "/");
   }
-
-  return;
 }, "ensureIsAuthenticated");
