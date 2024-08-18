@@ -17,4 +17,6 @@ export const unauthenticate = action(async () => {
   "use server";
 
   await $unauthenticate();
+
+  throw redirect("/");
 });

@@ -22,8 +22,6 @@ export const $unauthenticate = async () => {
   };
 
   await changeSession(data);
-
-  throw redirect("/");
 };
 
 export const $isAuthenticated = cache(async () => {
