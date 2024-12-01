@@ -13,6 +13,7 @@ export function guest(
 ) {
   return (props: RouteSectionProps) => {
     const [params] = useSearchParams();
+    const redirect = params.redirect;
 
     const isLoggedIn = createAsync(() => getIsLoggedIn(), {
       deferStream: true,
@@ -22,14 +23,7 @@ export function guest(
       <Switch>
         <Match when={isLoggedIn() === false}>{children(props)}</Match>
         <Match when={isLoggedIn() === true}>
-          <Switch>
-            <Match when={typeof params.redirect === "string"}>
-              <Navigate href={params.redirect as string} />
-            </Match>
-            <Match when={typeof params.redirect !== "string"}>
-              <Navigate href={fallback} />
-            </Match>
-          </Switch>
+          <Navigate href={typeof redirect === "string" && redirect.startsWith("/") ? redirect : fallback} />
         </Match>
       </Switch>
     );
