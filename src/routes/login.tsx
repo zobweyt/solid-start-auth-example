@@ -1,12 +1,13 @@
 import { useSearchParams } from "@solidjs/router";
 import { Show } from "solid-js";
-import { authenticate } from "~/lib/auth/actions";
+import { login } from "~/lib/auth";
+import { guest } from "~/lib/router";
 
-export default function Auth() {
+export default guest(() => {
   const [params] = useSearchParams();
 
   return (
-    <form action={authenticate} method="post" class="max-w-md mx-auto my-8">
+    <form action={login} method="post" class="max-w-md mx-auto my-8">
       <div class="flex flex-col gap-4">
         <input
           required
@@ -30,11 +31,11 @@ export default function Auth() {
 
         <button
           type="submit"
-          class="py-2 px-8 rounded-md bg-violet-600 text-white"
+          class="py-2 px-8 rounded-md bg-violet-600 hover:bg-violet-700 text-white"
         >
           Login
         </button>
       </div>
     </form>
   );
-}
+});

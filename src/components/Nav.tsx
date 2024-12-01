@@ -1,23 +1,38 @@
-import { A, useLocation } from "@solidjs/router";
+import { A } from "@solidjs/router";
 
 export default function Nav() {
-  const location = useLocation();
-  const active = (path: string) =>
-    path == location.pathname ? "border-sky-600" : "border-transparent hover:border-sky-600";
   return (
     <nav class="bg-sky-800">
-      <ul class="container flex items-center p-3 text-gray-200">
-        <li class={`border-b-2 ${active("/")} mx-1.5 sm:mx-6`}>
-          <A href="/">Home</A>
+      <ul class="container mx-auto flex items-center px-4 pt-3 pb-4 text-gray-200 gap-8">
+        <li>
+          <A
+            end
+            href="/"
+            class="hover:underline underline-offset-8"
+            activeClass="underline"
+          >
+            Home
+          </A>
         </li>
-        <li class={`border-b-2 ${active("/about")} mx-1.5 sm:mx-6`}>
-          <A href="/about">About</A>
+        <li>
+          <A
+            end
+            href="/settings"
+            class="hover:underline underline-offset-8"
+            activeClass="underline"
+          >
+            Settings
+          </A>
         </li>
-        <li class={`border-b-2 ${active("/settings")} mx-1.5 sm:mx-6`}>
-          <A href="/settings">Settings</A>
-        </li>
-        <li class={`border-b-2 ${active("/login")} mx-1.5 sm:mx-6`}>
-          <A href="/login">Login</A>
+        <li>
+          <A
+            end
+            href="/login"
+            class="hover:underline underline-offset-8"
+            activeClass="underline"
+          >
+            Login
+          </A>
         </li>
       </ul>
     </nav>

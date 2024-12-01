@@ -1,26 +1,29 @@
-import { getRequestEvent } from "solid-js/web";
-import { updateSession, useSession } from "vinxi/http";
-
-export const SESSION_COOKIE_OPTIONS = {
-  password: "thisisadummysessionsecretverylongbutnotgood",
-  maxAge: 24 * 60 * 60,
-};
-
-export type SessionData = {
-  auth?: {
-    username: string;
-    password: string;
-  };
-};
+import { useSession } from "vinxi/http";
+import type { SessionData, SessionDataCredentials } from "./types";
 
 export const getSession = async () => {
-  return await useSession<SessionData>(SESSION_COOKIE_OPTIONS);
+  "use server";
+
+  return await useSession<SessionData>({
+    name: "session",
+    password: process.env.SESSION_SECRET,
+  });
 };
 
-export const changeSession = async (data: SessionData) => {
-  const event = getRequestEvent();
+export const clearSession = async () => {
+  "use server";
 
-  if (event) {
-    await updateSession(event.nativeEvent, SESSION_COOKIE_OPTIONS, () => data);
-  }
+  const session = await getSession();
+
+  await session.clear();
+};
+
+export const updateSession = async (credentials: SessionDataCredentials) => {
+  "use server";
+
+  const session = await getSession();
+
+  await session.update(() => ({
+    credentials: credentials,
+  }));
 };
